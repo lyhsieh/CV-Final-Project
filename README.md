@@ -5,7 +5,7 @@
     ```bash
     git clone https://github.com/LeoTheBestCoder/CV-Final-Project
     ```
-1. Create a virtual environment
+1. Create a virtual environment with `conda`
     ```bash
     conda create -n CV python=3.9
     ```

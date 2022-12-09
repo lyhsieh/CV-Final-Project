@@ -1,2 +1,5 @@
 # ignore Microsoft Word file
 *.docx
+
+# pycache
+__pycache__

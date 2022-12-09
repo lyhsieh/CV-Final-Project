@@ -1,0 +1,7 @@
+python scripts/inference.py \
+--exp_dir= ./ \
+--checkpoint_path=./pretrained_models/psp_ffhq_encode.pt \
+--data_path= ./input \
+--test_batch_size=1 \
+--test_workers=1 \
+--couple_outputs

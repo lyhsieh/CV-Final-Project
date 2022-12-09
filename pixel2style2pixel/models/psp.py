@@ -67,7 +67,7 @@ class pSp(nn.Module):
 				self.__load_latent_avg(ckpt, repeat=self.opts.n_styles)
 
 	def forward(self, x, resize=True, latent_mask=None, input_code=False, randomize_noise=True,
-	            inject_latent=None, return_latents=False, alpha=None):
+	            inject_latent=None, return_latents=False, alpha=None, interpolation=False):
 		if input_code:
 			codes = x
 		else:
@@ -90,6 +90,13 @@ class pSp(nn.Module):
 				else:
 					codes[:, i] = 0
 
+		if interpolation:
+			num = 11
+			new_codes = torch.zeros((num,codes.shape[1],codes.shape[2])).to('cuda:0')
+			for i in range(num):
+				new_codes[i] = codes[0]*(1-i/10) + codes[1]*i/10
+			codes = new_codes
+  
 		input_is_latent = not input_code
 		images, result_latent = self.decoder([codes],
 		                                     input_is_latent=input_is_latent,

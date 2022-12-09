@@ -76,10 +76,11 @@ def run():
             toc = time.time()
             global_time.append(toc - tic)
 
-        for i in range(opts.test_batch_size):
+        for i in range(result_batch.shape[0]):
             result = tensor2im(result_batch[i])
-            im_path = dataset.paths[global_i]
-
+            # im_path = dataset.paths[global_i]
+            im_path = f'mytargetimg{i}.png'
+            
             if opts.couple_outputs or global_i % 100 == 0:
                 input_im = log_input_image(input_batch[i], opts)
                 resize_amount = (256, 256) if opts.resize_outputs else (opts.output_size, opts.output_size)
@@ -110,7 +111,7 @@ def run():
 
 def run_on_batch(inputs, net, opts):
     if opts.latent_mask is None:
-        result_batch = net(inputs, randomize_noise=False, resize=opts.resize_outputs)
+        result_batch = net(inputs, randomize_noise=False, resize=opts.resize_outputs, interpolation=True)
     else:
         latent_mask = [int(l) for l in opts.latent_mask.split(",")]
         result_batch = []

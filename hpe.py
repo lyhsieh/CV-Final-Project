@@ -1,5 +1,7 @@
 import cv2
 import mediapipe as mp
+from time import sleep
+from const import *
 mp_drawing = mp.solutions.drawing_utils          # mediapipe 繪圖方法
 mp_drawing_styles = mp.solutions.drawing_styles  # mediapipe 繪圖樣式
 mp_pose = mp.solutions.pose                      # mediapipe pose estimation
@@ -33,11 +35,28 @@ with mp_pose.Pose(
         if results_1.pose_landmarks is not None:
             for i in range(33):
                 results_1.pose_landmarks.landmark[i].x /=2
+                # print(f'person 1: {i} = {results_1.pose_landmarks.landmark[i].x}')
+                if results_1.pose_landmarks.landmark[15].y < results_1.pose_landmarks.landmark[0].y:
+                    print('left person raising right hand')
+                elif results_1.pose_landmarks.landmark[16].y < results_1.pose_landmarks.landmark[0].y:
+                    print('left person raising left hand')
+                else:
+                    print('L fuck')
                 
         results_2 = pose.process(crop_img_2)
         if results_2.pose_landmarks is not None:
             for i in range(33):
                 results_2.pose_landmarks.landmark[i].x = (results_2.pose_landmarks.landmark[i].x)/2 + 0.5
+                # print(f'person 2: {i} = {results_2.pose_landmarks.landmark[i].x}')
+                if results_2.pose_landmarks.landmark[15].y < results_2.pose_landmarks.landmark[0].y:
+                    print('right person raising right hand')
+                elif results_2.pose_landmarks.landmark[16].y < results_2.pose_landmarks.landmark[0].y:
+                    print('right person raising left hand')
+                else:
+                    print('R fuck')
+
+        
+
 
         img.flags.writeable = True
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)

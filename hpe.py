@@ -36,12 +36,15 @@ with mp_pose.Pose(
             for i in range(33):
                 results_1.pose_landmarks.landmark[i].x /=2
                 # print(f'person 1: {i} = {results_1.pose_landmarks.landmark[i].x}')
-                if results_1.pose_landmarks.landmark[15].y < results_1.pose_landmarks.landmark[0].y:
+                left_hand_y = results_1.pose_landmarks.landmark[15].y
+                right_hand_y = results_1.pose_landmarks.landmark[16].y
+                nose_y = results_1.pose_landmarks.landmark[0].y
+                if left_hand_y < nose_y:
                     print('left person raising right hand')
-                elif results_1.pose_landmarks.landmark[16].y < results_1.pose_landmarks.landmark[0].y:
+                elif right_hand_y < nose_y:
                     print('left person raising left hand')
                 else:
-                    print('L fuck')
+                    print('L no action')
                 
         results_2 = pose.process(crop_img_2)
         if results_2.pose_landmarks is not None:
@@ -53,7 +56,7 @@ with mp_pose.Pose(
                 elif results_2.pose_landmarks.landmark[16].y < results_2.pose_landmarks.landmark[0].y:
                     print('right person raising left hand')
                 else:
-                    print('R fuck')
+                    print('R no action')
 
         
 

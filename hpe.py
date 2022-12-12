@@ -51,10 +51,13 @@ with mp_pose.Pose(
             for i in range(33):
                 results_2.pose_landmarks.landmark[i].x = (results_2.pose_landmarks.landmark[i].x)/2 + 0.5
                 # print(f'person 2: {i} = {results_2.pose_landmarks.landmark[i].x}')
-                if results_2.pose_landmarks.landmark[15].y < results_2.pose_landmarks.landmark[0].y:
-                    print('right person raising right hand')
-                elif results_2.pose_landmarks.landmark[16].y < results_2.pose_landmarks.landmark[0].y:
-                    print('right person raising left hand')
+                left_hand_y = results_2.pose_landmarks.landmark[15].y
+                right_hand_y = results_2.pose_landmarks.landmark[16].y
+                nose_y = results_2.pose_landmarks.landmark[0].y
+                if left_hand_y < nose_y:
+                    print('left person raising right hand')
+                elif right_hand_y < nose_y:
+                    print('left person raising left hand')
                 else:
                     print('R no action')
 

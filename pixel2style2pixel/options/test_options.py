@@ -28,6 +28,9 @@ class TestOptions:
 		self.parser.add_argument('--resize_factors', type=str, default=None,
 		                         help='Downsampling factor for super-res (should be a single value for inference).')
 
+		# interpolation??
+		self.parser.add_argument('--interpolation', action='store_true', help='latent code interpolation')
+  
 	def parse(self):
 		opts = self.parser.parse_args()
 		return opts

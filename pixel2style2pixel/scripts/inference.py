@@ -66,6 +66,9 @@ def run():
 
     global_i = 0
     global_time = []
+    
+    result_oneimage = [[] for _ in range(3)]
+    
     for input_batch in tqdm(dataloader):
         if global_i >= opts.n_images:
             break
@@ -96,10 +99,30 @@ def run():
                                           np.array(result.resize(resize_amount))], axis=1)
                 Image.fromarray(res).save(os.path.join(out_path_coupled, os.path.basename(im_path)))
 
+            
+            if i%4 == 0:
+                result_oneimage[i//4] = np.array(result.resize(resize_amount))
+            else:
+                result_oneimage[i//4] = np.concatenate([result_oneimage[i//4],np.array(result.resize(resize_amount))], axis=1)
+            
             im_save_path = os.path.join(out_path_results, os.path.basename(im_path))
             Image.fromarray(np.array(result)).save(im_save_path)
 
             global_i += 1
+        
+        
+        sz = np.array(result.resize(resize_amount)).shape[0]
+        height,width = sz*3,result_oneimage[0].shape[1]
+        array_oneImage = np.zeros((height,width,3))
+        cnt = 0
+        for i in range(0,sz*3,sz):
+            array_oneImage[i:i+sz] = result_oneimage[cnt]
+            cnt += 1
+    
+        im_save_path = os.path.join(out_path_results, 'change.png')
+        Image.fromarray(np.array(array_oneImage).astype('uint8')).save(im_save_path)
+        import pdb; pdb.set_trace()
+        
 
     stats_path = os.path.join(opts.exp_dir, 'stats.txt')
     result_str = 'Runtime {:.4f}+-{:.4f}'.format(np.mean(global_time), np.std(global_time))
@@ -111,7 +134,9 @@ def run():
 
 def run_on_batch(inputs, net, opts):
     if opts.latent_mask is None:
-        result_batch = net(inputs, randomize_noise=False, resize=opts.resize_outputs, interpolation=True)
+        if opts.interpolation:
+            assert inputs.shape[0] == 2,'Incorrect batch size for latent code interpolation'    
+        result_batch = net(inputs, randomize_noise=False, resize=opts.resize_outputs, interpolation=opts.interpolation)
     else:
         latent_mask = [int(l) for l in opts.latent_mask.split(",")]
         result_batch = []

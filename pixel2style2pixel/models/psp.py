@@ -91,7 +91,7 @@ class pSp(nn.Module):
 					codes[:, i] = 0
 
 		if interpolation:
-			num = 11
+			num = 12
 			new_codes = torch.zeros((num,codes.shape[1],codes.shape[2])).to('cuda:0')
 			for i in range(num):
 				new_codes[i] = codes[0]*(1-i/10) + codes[1]*i/10

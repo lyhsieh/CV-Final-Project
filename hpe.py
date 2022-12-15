@@ -16,6 +16,12 @@ with mp_pose.Pose(
     if not cap.isOpened():
         print("Cannot open camera")
         exit()
+        
+    action1_left = False
+    action1_right = False
+    action2_left = False
+    action2_right = False
+    
     while True:
         ret, img = cap.read()
         if not ret:
@@ -36,15 +42,22 @@ with mp_pose.Pose(
             for i in range(33):
                 results_1.pose_landmarks.landmark[i].x /=2
                 # print(f'person 1: {i} = {results_1.pose_landmarks.landmark[i].x}')
-                left_hand_y = results_1.pose_landmarks.landmark[15].y
-                right_hand_y = results_1.pose_landmarks.landmark[16].y
-                nose_y = results_1.pose_landmarks.landmark[0].y
-                if left_hand_y < nose_y:
+                left_hand_x, left_hand_y = results_1.pose_landmarks.landmark[15].x, results_1.pose_landmarks.landmark[15].y
+                right_hand_x, right_hand_y = results_1.pose_landmarks.landmark[16].x, results_1.pose_landmarks.landmark[16].y
+                nose_x, nose_y = results_1.pose_landmarks.landmark[0].x, results_1.pose_landmarks.landmark[0].y
+                if left_hand_y < nose_y and (action1_left == False):
+                    action1_left = True
                     print('left person raising right hand')
-                elif right_hand_y < nose_y:
+                elif left_hand_y <= nose_y and (action1_left == True):
+                    action1_left = False
+                elif right_hand_y < nose_y and (action1_right == False):
+                    action1_right = True
                     print('left person raising left hand')
-                else:
-                    print('L no action')
+                elif right_hand_y <= nose_y and (action1_right == True):
+                    action1_right = False
+
+                # else:
+                #     print('L no action')
                 
         results_2 = pose.process(crop_img_2)
         if results_2.pose_landmarks is not None:
@@ -54,12 +67,16 @@ with mp_pose.Pose(
                 left_hand_y = results_2.pose_landmarks.landmark[15].y
                 right_hand_y = results_2.pose_landmarks.landmark[16].y
                 nose_y = results_2.pose_landmarks.landmark[0].y
-                if left_hand_y < nose_y:
-                    print('left person raising right hand')
-                elif right_hand_y < nose_y:
-                    print('left person raising left hand')
-                else:
-                    print('R no action')
+                if left_hand_y < nose_y and (action2_left == False):
+                    action2_left = True
+                    print('right person raising right hand')
+                elif right_hand_y < nose_y and (action2_right == False):
+                    action2_right = True
+                    print('right person raising left hand')
+                elif left_hand_y <= nose_y and (action2_left == True):
+                    action2_left = False
+                elif right_hand_y <= nose_y and (action2_right == True):
+                    action2_right = False
 
         
 

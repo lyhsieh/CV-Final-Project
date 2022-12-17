@@ -205,20 +205,27 @@ with mp_pose.Pose(
             if l_cnt >= 5:
                 l_cnt = 0
                 # left person raising left hand
-                if left_hand_y < nose_y and not action1[0]:
+                # if left_hand_y < nose_y and not action1[0]:
+                #     action1[0], person_1[0] = True, True
+                #     print('left person raising right hand')
+                # elif left_hand_y >= nose_y and action1[0]:
+                #     action1[0] = False
+                #     print('None 0')
+
+                if left_hand_y < nose_y:
                     action1[0], person_1[0] = True, True
                     print('left person raising right hand')
-                elif left_hand_y >= nose_y and action1[0]:
-                    action1[0] = False
-                    print('None 0')
-
-                # left person raising left hand
-                elif right_hand_y < nose_y and not action1[1]:
+                elif right_hand_y < nose_y:
                     action1[1], person_1[1] = True, True
                     print('left person raising left hand')
-                elif right_hand_y >= nose_y and action1[1]:
-                    action1[1] = False
-                    print('None 1')
+
+                # left person raising left hand
+                # elif right_hand_y < nose_y and not action1[1]:
+                #     action1[1], person_1[1] = True, True
+                #     print('left person raising left hand')
+                # elif right_hand_y >= nose_y and action1[1]:
+                #     action1[1] = False
+                #     print('None 1')
 
                 # left person punch left
                 elif abs(nose_x - left_hand_x) > PUNCH_TH:  # this num hasn't been tested

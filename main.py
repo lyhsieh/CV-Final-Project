@@ -155,8 +155,9 @@ with mp_pose.Pose(
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5) as pose:
 
-    action1 = [False, False, False, False, False] # raise left hand, raise right hand, punch left, punch right, defense for left preson
-    action2 = [False, False, False, False, False] # right person
+    # raise left hand, raise right hand, punch left, punch right, defense
+    action1 = [False, False, False, False, False]
+    action2 = [False, False, False, False, False]
 
     if not cap.isOpened():
         print("Cannot open camera")
@@ -173,7 +174,7 @@ with mp_pose.Pose(
         if not ret:
             print("Cannot receive frame")
             break
-        
+
         img = cv2.resize(img,(520,300))               # resize to accelarate the computing speed
         img = cv2.flip(img, 1)                     # flip right and left
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)   # turn BGR into RGB
@@ -182,44 +183,44 @@ with mp_pose.Pose(
         crop_img_1 = img[:, 0:int(w/2)]   # left side person
         crop_img_2 = img[:, int(w/2):w]   # right side person
         img.flags.writeable = False
-        
+
         results_1 = pose.process(crop_img_1)        # get pose detection result
         if results_1.pose_landmarks is not None:
             for i in range(33):
                 results_1.pose_landmarks.landmark[i].x /=2
                 # print(f'person 1: {i} = {results_1.pose_landmarks.landmark[i].x}')
-            left_hand_x, left_hand_y = results_1.pose_landmarks.landmark[15].x, results_1.pose_landmarks.landmark[15].y
-            right_hand_x, right_hand_y = results_1.pose_landmarks.landmark[16].x, results_1.pose_landmarks.landmark[16].y
-            nose_x, nose_y = results_1.pose_landmarks.landmark[0].x, results_1.pose_landmarks.landmark[0].y
+            left_hand_x = results_1.pose_landmarks.landmark[15].x
+            left_hand_y = results_1.pose_landmarks.landmark[15].y
+            right_hand_x = results_1.pose_landmarks.landmark[16].x
+            right_hand_y =  results_1.pose_landmarks.landmark[16].y
+            nose_x = results_1.pose_landmarks.landmark[0].x
+            nose_y = results_1.pose_landmarks.landmark[0].y
+
             if l_cnt >= 5:
                 l_cnt = 0
                 # left person raising left hand
                 if left_hand_y < nose_y and action1[0] == False:
                     action1[0], person_1[0] = True, True
                     print('left person raising right hand')
-                    # l_cnt = 0
                 elif left_hand_y >= nose_y and action1[0] == True:
                     action1[0] = False
                     print('None 0')
-                        
-                # left person raising left hand    
+
+                # left person raising left hand
                 elif right_hand_y < nose_y and action1[1] == False:
                     action1[1], person_1[1] = True, True
                     print('left person raising left hand')
-                    # l_cnt = 0
                 elif right_hand_y >= nose_y and action1[1] == True:
                     action1[1] = False
                     print('None 1')
-                    
-                # left person punch left    
+
+                # left person punch left
                 elif abs(nose_x - left_hand_x) > PUNCH_TH:  # this num hasn't been tested
                     if action1[2] == False:
                         action1[2], person_1[2] = True, True
                         print('left person punch right')
                     else:
                         print('action = punch right, but you should return to None')
-
-                    # l_cnt = 0
 
                 # left person punch right
                 elif abs(right_hand_x - nose_x) > PUNCH_TH:  # this num hasn't been tested
@@ -230,7 +231,7 @@ with mp_pose.Pose(
                         print('action = punch left, but you should return to None')
 
                     # l_cnt = 0
-                        
+
                 # defense
                 elif abs(left_hand_x - right_hand_x) < 0.1:  # this num hasn't been tested
                     if action1[4] == False:
@@ -238,35 +239,37 @@ with mp_pose.Pose(
                         print('defense')
                     else:
                         print('action = defense, but you should return to None')
-                    
-                # no action   
+
+                # no action
                 else:
                     print('None')
                     action1[2], action1[3], action1[4] = False, False, False
                     # for i in range(len(action1)):
                     #     action1[i] = False
-                
+
         results_2 = pose.process(crop_img_2)
         if results_2.pose_landmarks is not None:
             # print(abs(right_hand_x - nose_x))
             for i in range(33):
                 results_2.pose_landmarks.landmark[i].x = (results_2.pose_landmarks.landmark[i].x)/2 + 0.5
                 # print(f'person 2: {i} = {results_2.pose_landmarks.landmark[i].x}')
-            left_hand_x, left_hand_y = results_2.pose_landmarks.landmark[15].x, results_2.pose_landmarks.landmark[15].y
-            right_hand_x, right_hand_y = results_2.pose_landmarks.landmark[16].x, results_2.pose_landmarks.landmark[16].y
-            nose_x, nose_y = results_2.pose_landmarks.landmark[0].x, results_2.pose_landmarks.landmark[0].y
+            left_hand_x = results_2.pose_landmarks.landmark[15].x
+            left_hand_y = results_2.pose_landmarks.landmark[15].y
+            right_hand_x = results_2.pose_landmarks.landmark[16].x
+            right_hand_y = results_2.pose_landmarks.landmark[16].y
+            nose_x = results_2.pose_landmarks.landmark[0].x
+            nose_y = results_2.pose_landmarks.landmark[0].y
             if r_cnt >= 5:
                 r_cnt = 0
                 # right person raising right hand
                 if left_hand_y < nose_y and action2[0] == False:
                     action2[0], person_2[0] = True, True
                     print('right person raising right hand')
-                    # r_cnt = 0
                 elif left_hand_y >= nose_y and action2[0] == True:
                     action2[0] = False
                     print('None 0')
-                        
-                # right person raising left hand    
+
+                # right person raising left hand
                 elif right_hand_y < nose_y and action2[1] == False:
                     action2[1], person_2[1] = True, True
                     print('right person raising left hand')
@@ -274,16 +277,14 @@ with mp_pose.Pose(
                 elif right_hand_y >= nose_y and action2[1] == True:
                     action2[1] = False
                     print('None 1')
-                    
-                # right person punch left    
+
+                # right person punch left
                 elif abs(nose_x - left_hand_x) > PUNCH_TH:  # this num hasn't been tested
                     if action2[2] == False:
                         action2[2], person_2[2] = True, True
                         print('right person punch right')
                     else:
                         print('action = punch right, but you should return to None')
-
-                    # r_cnt = 0
 
                 # right person punch right
                 elif abs(right_hand_x - nose_x) > PUNCH_TH:  # this num hasn't been tested
@@ -293,8 +294,6 @@ with mp_pose.Pose(
                     else:
                         print('action = punch left, but you should return to None')
 
-                    # r_cnt = 0
-                        
                 # defense
                 elif abs(left_hand_x - right_hand_x) < 0.1:  # this num hasn't been tested
                     if action2[4] == False:
@@ -302,14 +301,14 @@ with mp_pose.Pose(
                         print('defense')
                     else:
                         print('action = defense, but you should return to None')
-                    
-                # no action   
+
+                # no action
                 else:
                     print('None')
                     action2[2], action2[3], action2[4] = False, False, False
                     # for i in range(len(action2)):
                     #     action2[i] = False
-                        
+
 
         sleep(.1)
 
@@ -387,9 +386,11 @@ with mp_pose.Pose(
                 round_over = False
                 intro_count = 3
                 fighter_1 = Fighter(1, 200, 310, False, P1_DATA,
-                                    warrior_sheet, WARRIOR_ANIMATION_STEPS, sword_fx, player_s1, HEAD1_DATA)
+                                    warrior_sheet, WARRIOR_ANIMATION_STEPS, 
+                                    sword_fx, player_s1, HEAD1_DATA)
                 fighter_2 = Fighter(2, 700, 310, True, P2_DATA,
-                                    wizard_sheet, WIZARD_ANIMATION_STEPS, magic_fx, player_s2, HEAD2_DATA)
+                                    wizard_sheet, WIZARD_ANIMATION_STEPS, 
+                                    magic_fx, player_s2, HEAD2_DATA)
 
         # event handler
         for event in pygame.event.get():

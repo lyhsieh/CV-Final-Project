@@ -121,7 +121,7 @@ def run():
     
         im_save_path = os.path.join(out_path_results, 'change.png')
         Image.fromarray(np.array(array_oneImage).astype('uint8')).save(im_save_path)
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         
 
     stats_path = os.path.join(opts.exp_dir, 'stats.txt')

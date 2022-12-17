@@ -53,30 +53,60 @@ with mp_pose.Pose(
             left_hand_x, left_hand_y = results_1.pose_landmarks.landmark[15].x, results_1.pose_landmarks.landmark[15].y
             right_hand_x, right_hand_y = results_1.pose_landmarks.landmark[16].x, results_1.pose_landmarks.landmark[16].y
             nose_x, nose_y = results_1.pose_landmarks.landmark[0].x, results_1.pose_landmarks.landmark[0].y
-            # if left_hand_y < nose_y and action1[0] == False:
-            #     action1[0] = True
-            #     print('left person raising right hand')
-            # elif left_hand_y >= nose_y and action1[0] == True:
-            #     action1[0] = False
-            # elif right_hand_y < nose_y and action1[1] == False:
-            #     action1[1] = True
-            #     print('left person raising left hand')
-            # elif right_hand_y >= nose_y and action1[1] == True:
-            #     action1[1] = False
-            # elif nose_x - left_hand_x > 0.3 and action1[2] == False:  # this num hasn't been tested
-            #     action1[2] = True
-            #     print('left person punch left')
-            # # TODO : punch left restart
-            # elif right_hand_x - nose_x > 0.3 and action1[3] == False:  # this num hasn't been tested
-            #     action1[3] = True
-            #     print('left person punch right')
-            # # TODO : punch right restart
-            # elif abs(left_hand_x-right_hand_x) < 0.1 and action1[4] == False: # this num hasn't been tested
-            #     action1[4] = True
-            #     print('defense')
-            # TODO : defense restart
-            # else:
-            #     print('L no action')
+            if l_cnt >= 5:
+                l_cnt = 0
+                # right person raising right hand
+                if left_hand_y < nose_y and action1[0] == False:
+                    action1[0], fighter_2[0] = True, True
+                    print('right person raising right hand')
+                    # l_cnt = 0
+                elif left_hand_y >= nose_y and action1[0] == True:
+                    action1[0] = False
+                    print('None 0')
+                        
+                # right person raising left hand    
+                elif right_hand_y < nose_y and action1[1] == False:
+                    action1[1], fighter_2[1] = True, True
+                    print('right person raising left hand')
+                    # l_cnt = 0
+                elif right_hand_y >= nose_y and action1[1] == True:
+                    action1[1] = False
+                    print('None 1')
+                    
+                # right person punch left    
+                elif nose_x - left_hand_x > 0.3:  # this num hasn't been tested
+                    if action1[2] == False:
+                        action1[2], fighter_2[2] = True, True
+                        print('right person punch left')
+                    else:
+                        print('action = punch left, but you should return to None')
+
+                    # l_cnt = 0
+
+                # right person punch right
+                elif abs(right_hand_x - nose_x) > 0.5:  # this num hasn't been tested
+                    if action1[3] == False:
+                        action1[3], fighter_2[3] = True, True
+                        print('right person punch right')
+                    else:
+                        print('action = punch right, but you should return to None')
+
+                    # l_cnt = 0
+                        
+                # defense
+                elif abs(left_hand_x - right_hand_x) < 0.1:  # this num hasn't been tested
+                    if action1[4] == False:
+                        action1[4], fighter_2[4] = True, True
+                        print('defense')
+                    else:
+                        print('action = defense, but you should return to None')
+                    
+                # no action   
+                else:
+                    print('None')
+                    action1[2], action1[3], action1[4] = False, False, False
+                    # for i in range(len(action1)):
+                    #     action1[i] = False
                 
         results_2 = pose.process(crop_img_2)
         if results_2.pose_landmarks is not None:

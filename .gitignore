@@ -7,5 +7,5 @@ __pycache__
 # pretrain weight
 *.pt
 
-# MAC
+# for mac
 .DS_Store

@@ -108,21 +108,32 @@ with mp_pose.Pose(
                     print('None 1')
                     
                 # right person punch left    
-                elif nose_x - left_hand_x > 0.3 and action2[2] == False:  # this num hasn't been tested
-                    action2[2], fighter_2[2] = True, True
-                    print('right person punch left')
+                elif nose_x - left_hand_x > 0.3:  # this num hasn't been tested
+                    if action2[2] == False:
+                        action2[2], fighter_2[2] = True, True
+                        print('right person punch left')
+                    else:
+                        print('action = punch left, but you should return to None')
+
                     # r_cnt = 0
 
                 # right person punch right
-                elif abs(right_hand_x - nose_x) > 0.5 and action2[3] == False:  # this num hasn't been tested
-                    action2[3], fighter_2[3] = True, True
-                    print('right person punch right')
+                elif abs(right_hand_x - nose_x) > 0.5:  # this num hasn't been tested
+                    if action2[3] == False:
+                        action2[3], fighter_2[3] = True, True
+                        print('right person punch right')
+                    else:
+                        print('action = punch right, but you should return to None')
+
                     # r_cnt = 0
                         
                 # defense
-                elif abs(left_hand_x - right_hand_x) < 0.1 and action2[4] == False: # this num hasn't been tested
-                    action2[4], fighter_2[4] = True, True
-                    print('defense')
+                elif abs(left_hand_x - right_hand_x) < 0.1:  # this num hasn't been tested
+                    if action2[4] == False:
+                        action2[4], fighter_2[4] = True, True
+                        print('defense')
+                    else:
+                        print('action = defense, but you should return to None')
                     
                 # no action   
                 else:

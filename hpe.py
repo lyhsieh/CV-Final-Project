@@ -111,6 +111,8 @@ with mp_pose.Pose(
                         print('defense')
                     else:
                         print('None')
+                        for i in range(len(action2)):
+                            action2[i] = False
                         
                     # TODO : defense restart
         sleep(.1)

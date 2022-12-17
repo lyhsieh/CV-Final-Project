@@ -1,15 +1,21 @@
+'''
+CV final Project:
+An Interesting Fighting Game using Style-based Generative Adversarial Network
+and Real-time Human Pose Estimation
+Powered by pygame (https://www.pygame.org/)
+'''
+import os
+from time import sleep
 import pygame
+import cv2
+import natsort
+import mediapipe as mp
 from pygame import mixer
 from fighter import Fighter
-import os
-import natsort
 
 
-# human pose libraries ####################################################
-import cv2
-import mediapipe as mp
-from time import sleep
 
+# human pose settings ######################################################
 mp_drawing = mp.solutions.drawing_utils          # mediapipe 繪圖方法
 mp_drawing_styles = mp.solutions.drawing_styles  # mediapipe 繪圖樣式
 mp_pose = mp.solutions.pose                      # mediapipe pose estimation
@@ -199,24 +205,24 @@ with mp_pose.Pose(
             if l_cnt >= 5:
                 l_cnt = 0
                 # left person raising left hand
-                if left_hand_y < nose_y and action1[0] == False:
+                if left_hand_y < nose_y and not action1[0]:
                     action1[0], person_1[0] = True, True
                     print('left person raising right hand')
-                elif left_hand_y >= nose_y and action1[0] == True:
+                elif left_hand_y >= nose_y and action1[0]:
                     action1[0] = False
                     print('None 0')
 
                 # left person raising left hand
-                elif right_hand_y < nose_y and action1[1] == False:
+                elif right_hand_y < nose_y and not action1[1]:
                     action1[1], person_1[1] = True, True
                     print('left person raising left hand')
-                elif right_hand_y >= nose_y and action1[1] == True:
+                elif right_hand_y >= nose_y and action1[1]:
                     action1[1] = False
                     print('None 1')
 
                 # left person punch left
                 elif abs(nose_x - left_hand_x) > PUNCH_TH:  # this num hasn't been tested
-                    if action1[2] == False:
+                    if not action1[2]:
                         action1[2], person_1[2] = True, True
                         print('left person punch right')
                     else:
@@ -224,17 +230,15 @@ with mp_pose.Pose(
 
                 # left person punch right
                 elif abs(right_hand_x - nose_x) > PUNCH_TH:  # this num hasn't been tested
-                    if action1[3] == False:
+                    if not action1[3]:
                         action1[3], person_1[3] = True, True
                         print('left person punch left')
                     else:
                         print('action = punch left, but you should return to None')
 
-                    # l_cnt = 0
-
                 # defense
                 elif abs(left_hand_x - right_hand_x) < 0.1:  # this num hasn't been tested
-                    if action1[4] == False:
+                    if not action1[4]:
                         action1[4], person_1[4] = True, True
                         print('defense')
                     else:
@@ -262,25 +266,25 @@ with mp_pose.Pose(
             if r_cnt >= 5:
                 r_cnt = 0
                 # right person raising right hand
-                if left_hand_y < nose_y and action2[0] == False:
+                if left_hand_y < nose_y and not action2[0]:
                     action2[0], person_2[0] = True, True
                     print('right person raising right hand')
-                elif left_hand_y >= nose_y and action2[0] == True:
+                elif left_hand_y >= nose_y and action2[0]:
                     action2[0] = False
                     print('None 0')
 
                 # right person raising left hand
-                elif right_hand_y < nose_y and action2[1] == False:
+                elif right_hand_y < nose_y and not action2[1]:
                     action2[1], person_2[1] = True, True
                     print('right person raising left hand')
                     # r_cnt = 0
-                elif right_hand_y >= nose_y and action2[1] == True:
+                elif right_hand_y >= nose_y and action2[1]:
                     action2[1] = False
                     print('None 1')
 
                 # right person punch left
                 elif abs(nose_x - left_hand_x) > PUNCH_TH:  # this num hasn't been tested
-                    if action2[2] == False:
+                    if not action2[2]:
                         action2[2], person_2[2] = True, True
                         print('right person punch right')
                     else:
@@ -288,7 +292,7 @@ with mp_pose.Pose(
 
                 # right person punch right
                 elif abs(right_hand_x - nose_x) > PUNCH_TH:  # this num hasn't been tested
-                    if action2[3] == False:
+                    if not action2[3]:
                         action2[3], person_2[3] = True, True
                         print('right person punch left')
                     else:
@@ -296,7 +300,7 @@ with mp_pose.Pose(
 
                 # defense
                 elif abs(left_hand_x - right_hand_x) < 0.1:  # this num hasn't been tested
-                    if action2[4] == False:
+                    if not action2[4]:
                         action2[4], person_2[4] = True, True
                         print('defense')
                     else:
@@ -308,7 +312,6 @@ with mp_pose.Pose(
                     action2[2], action2[3], action2[4] = False, False, False
                     # for i in range(len(action2)):
                     #     action2[i] = False
-
 
         sleep(.1)
 
@@ -386,10 +389,10 @@ with mp_pose.Pose(
                 round_over = False
                 intro_count = 3
                 fighter_1 = Fighter(1, 200, 310, False, P1_DATA,
-                                    warrior_sheet, WARRIOR_ANIMATION_STEPS, 
+                                    warrior_sheet, WARRIOR_ANIMATION_STEPS,
                                     sword_fx, player_s1, HEAD1_DATA)
                 fighter_2 = Fighter(2, 700, 310, True, P2_DATA,
-                                    wizard_sheet, WIZARD_ANIMATION_STEPS, 
+                                    wizard_sheet, WIZARD_ANIMATION_STEPS,
                                     magic_fx, player_s2, HEAD2_DATA)
 
         # event handler

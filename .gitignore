@@ -7,12 +7,15 @@ __pycache__
 # pretrain weight
 *.pt
 
+
 # MAC
 .DS_Store
 
 /pixel2style2pixel/output_source*
 /pixel2style2pixel/output_source_rmbg*
 /pixel2style2pixel/input*
+
+
 
 
 

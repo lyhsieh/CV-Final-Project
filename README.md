@@ -19,3 +19,14 @@
     ```bash
     pip install -r requirements.txt
     ```
+
+## How to play
+- Player 1  
+W, A, S, D: move  
+R: attack  
+F: defense  
+
+- Player 2  
+Arrow key: move  
+Space: attack  
+M: defense

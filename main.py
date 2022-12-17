@@ -313,7 +313,7 @@ with mp_pose.Pose(
                     # for i in range(len(action2)):
                     #     action2[i] = False
 
-        sleep(.1)
+        # sleep(.1)
 
 
         img.flags.writeable = True

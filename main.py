@@ -49,20 +49,19 @@ magic_fx = pygame.mixer.Sound("assets/audio/magic.wav")
 magic_fx.set_volume(0.1)
 
 # load background image
-bg_image = pygame.image.load("../background.jpeg").convert_alpha()
+bg_image = pygame.image.load("assets/images/background/background.jpeg").convert_alpha()
 alpha = 128
 bg_image.fill((255, 255, 255, alpha), None, pygame.BLEND_RGBA_MULT)
 # bg_image = pygame.image.load("assets/images/background/background.jpg").convert_alpha()
 
 # load spritesheets
-warrior_sheet = pygame.image.load("../stickman_blue_nobg.png").convert_alpha()
+warrior_sheet = pygame.image.load("assets/images/character/stickman_blue_nobg.png").convert_alpha()
 # warrior_sheet = pygame.image.load("assets/images/wizard/Sprites/warrior.png").convert_alpha()
-wizard_sheet = pygame.image.load("../stickman_red_nobg.png").convert_alpha()
+wizard_sheet = pygame.image.load("assets/images/character/stickman_red_nobg.png").convert_alpha()
 # wizard_sheet = pygame.image.load("assets/images/wizard/Sprites/wizard.png").convert_alpha()
 
 # load vicory image
-victory_img = pygame.image.load(
-    "assets/images/icons/victory.png").convert_alpha()
+victory_img = pygame.image.load("assets/images/icons/victory.png").convert_alpha()
 
 # define number of steps in each animation
 WARRIOR_ANIMATION_STEPS = [1, 1, 1, 5, 5, 1, 1]
@@ -73,22 +72,16 @@ count_font = pygame.font.Font("assets/fonts/turok.ttf", 80)
 score_font = pygame.font.Font("assets/fonts/turok.ttf", 30)
 
 # function for drawing text
-
-
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
 # function for drawing background
-
-
 def draw_bg():
     scaled_bg = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.blit(scaled_bg, (0, 0))
 
 # function for drawing fighter health bars
-
-
 def draw_health_bar(health, x, y):
     ratio = health / 100
     pygame.draw.rect(screen, WHITE, (x - 2, y - 2, 404, 34))

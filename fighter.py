@@ -64,10 +64,10 @@ class Fighter():
             # check player 1 controls
             if self.player == 1:
                 # movement
-                if key[pygame.K_a] or action[0]:    # raise left hand
+                if key[pygame.K_a] or action[1]:    # raise left hand
                     dx = -SPEED
                     self.running = True
-                if key[pygame.K_d] or action[1]:    # raise right hand
+                if key[pygame.K_d] or action[0]:    # raise right hand
                     dx = SPEED
                     self.running = True
                 # jump
@@ -80,7 +80,7 @@ class Fighter():
                     # determine which attack type was used
                     if key[pygame.K_r] or action[2] or action[3]:
                         self.attack_type = 2
-                    if key[pygame.K_t] or action[2] or action[3]:
+                    if key[pygame.K_t]:
                         self.attack_type = 1
                 # defense
                 if key[pygame.K_f] or action[4]:    # defense
@@ -89,10 +89,10 @@ class Fighter():
             # check player 2 controls
             if self.player == 2:
                 # movement
-                if key[pygame.K_LEFT] or action[0]:
+                if key[pygame.K_LEFT] or action[1]:
                     dx = -SPEED
                     self.running = True
-                if key[pygame.K_RIGHT] or action[1]:
+                if key[pygame.K_RIGHT] or action[0]:
                     dx = SPEED
                     self.running = True
                 # jump
@@ -105,7 +105,7 @@ class Fighter():
                     # determine which attack type was used
                     if key[pygame.K_SPACE] or action[2] or action[3]:
                         self.attack_type = 2
-                    if key[pygame.K_KP2] or action[2] or action[3]:
+                    if key[pygame.K_KP2]:
                         self.attack_type = 1
                 # defense
                 if key[pygame.K_m] or action[4]:    # defense

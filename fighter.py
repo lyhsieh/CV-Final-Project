@@ -51,8 +51,8 @@ class Fighter():
         return animation_list
 
     def move(self, screen_width, screen_height, surface, target, round_over, action):
-        SPEED = 20 #10
-        GRAVITY = 5 #2
+        SPEED = 80 #10
+        GRAVITY = 10 #2
         dx = 0
         dy = 0
         self.running = False

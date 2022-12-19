@@ -205,20 +205,27 @@ with mp_pose.Pose(
             if l_cnt >= 5:
                 l_cnt = 0
                 # left person raising left hand
-                if left_hand_y < nose_y and not action1[0]:
+                # if left_hand_y < nose_y and not action1[0]:
+                #     action1[0], person_1[0] = True, True
+                #     print('left person raising right hand')
+                # elif left_hand_y >= nose_y and action1[0]:
+                #     action1[0] = False
+                #     print('None 0')
+
+                if left_hand_y < nose_y:
                     action1[0], person_1[0] = True, True
                     print('left person raising right hand')
-                elif left_hand_y >= nose_y and action1[0]:
-                    action1[0] = False
-                    print('None 0')
-
-                # left person raising left hand
-                elif right_hand_y < nose_y and not action1[1]:
+                elif right_hand_y < nose_y:
                     action1[1], person_1[1] = True, True
                     print('left person raising left hand')
-                elif right_hand_y >= nose_y and action1[1]:
-                    action1[1] = False
-                    print('None 1')
+
+                # left person raising left hand
+                # elif right_hand_y < nose_y and not action1[1]:
+                #     action1[1], person_1[1] = True, True
+                #     print('left person raising left hand')
+                # elif right_hand_y >= nose_y and action1[1]:
+                #     action1[1] = False
+                #     print('None 1')
 
                 # left person punch left
                 elif abs(nose_x - left_hand_x) > PUNCH_TH:  # this num hasn't been tested
@@ -266,21 +273,29 @@ with mp_pose.Pose(
             if r_cnt >= 5:
                 r_cnt = 0
                 # right person raising right hand
-                if left_hand_y < nose_y and not action2[0]:
+                # if left_hand_y < nose_y and not action2[0]:
+                #     action2[0], person_2[0] = True, True
+                #     print('right person raising right hand')
+                # elif left_hand_y >= nose_y and action2[0]:
+                #     action2[0] = False
+                #     print('None 0')
+
+                # # right person raising left hand
+                # elif right_hand_y < nose_y and not action2[1]:
+                #     action2[1], person_2[1] = True, True
+                #     print('right person raising left hand')
+                #     # r_cnt = 0
+                # elif right_hand_y >= nose_y and action2[1]:
+                #     action2[1] = False
+                #     print('None 1')
+
+
+                if left_hand_y < nose_y:
                     action2[0], person_2[0] = True, True
                     print('right person raising right hand')
-                elif left_hand_y >= nose_y and action2[0]:
-                    action2[0] = False
-                    print('None 0')
-
-                # right person raising left hand
-                elif right_hand_y < nose_y and not action2[1]:
+                elif right_hand_y < nose_y:
                     action2[1], person_2[1] = True, True
                     print('right person raising left hand')
-                    # r_cnt = 0
-                elif right_hand_y >= nose_y and action2[1]:
-                    action2[1] = False
-                    print('None 1')
 
                 # right person punch left
                 elif abs(nose_x - left_hand_x) > PUNCH_TH:  # this num hasn't been tested

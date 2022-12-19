@@ -23,6 +23,7 @@ class Fighter():
         self.attack_cooldown = 0
         self.attack_sound = sound
         self.defensing = False
+        self.defense_hold = 0
         self.defense_cooldown = 0
         self.hit = False
         self.health = 100
@@ -140,7 +141,10 @@ class Fighter():
         if self.defense_cooldown > 0:
             self.defense_cooldown -= 1 #1
 
-
+        #apply defense hold
+        if self.defense_hold > 0:
+            self.defense_hold -= 1 #1
+        
         # update player position
         self.rect.x += dx
         self.rect.y += dy
@@ -195,8 +199,9 @@ class Fighter():
                     self.attacking = False
                     self.attack_cooldown = 20
                 if self.action == 7:
-                    self.defensing = False
-                    self.defense_cooldown = 20
+                    self.frame_index = len(self.animation_list[self.action]) - 3
+                    if self.defense_hold == 0:
+                        self.defensing = False
 
     def attack(self, target):
         if self.attack_cooldown == 0:
@@ -223,6 +228,8 @@ class Fighter():
     def defense(self):
         if self.defense_cooldown == 0:  
             self.defensing = True
+            self.defense_hold = 20
+            self.defense_cooldown = 20
 
     def update_action(self, new_action):
         # check if the new action is different to the previous one

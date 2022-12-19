@@ -82,9 +82,9 @@ HEAD2_OFFSET = [52, 150]    # x bigger -> left
 HEAD2_DATA = [HEAD2_SIZE, HEAD2_SCALE, HEAD2_OFFSET]
 
 # load music and sounds
-# pygame.mixer.music.load("assets/audio/music.mp3")
-# pygame.mixer.music.set_volume(0.5)
-# pygame.mixer.music.play(-1, 0.0, 5000)
+pygame.mixer.music.load("assets/audio/yunlin.mp3")
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1, 0.0, 5000)
 sword_fx = pygame.mixer.Sound("assets/audio/sword.wav")
 sword_fx.set_volume(0.1)
 magic_fx = pygame.mixer.Sound("assets/audio/magic.wav")

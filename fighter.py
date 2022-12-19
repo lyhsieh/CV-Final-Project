@@ -19,10 +19,11 @@ class Fighter():
         self.running = False
         self.jump = False
         self.attacking = False
-        self.defense = False
         self.attack_type = 0
         self.attack_cooldown = 0
         self.attack_sound = sound
+        self.defensing = False
+        self.defense_cooldown = 0
         self.hit = False
         self.health = 100
         self.alive = True
@@ -49,8 +50,8 @@ class Fighter():
         return animation_list
 
     def move(self, screen_width, screen_height, surface, target, round_over, action):
-        SPEED = 10
-        GRAVITY = 2
+        SPEED = 20 #10
+        GRAVITY = 5 #2
         dx = 0
         dy = 0
         self.running = False
@@ -84,7 +85,7 @@ class Fighter():
                         self.attack_type = 1
                 # defense
                 if key[pygame.K_f] or action[4]:    # defense
-                    self.defense = True
+                    self.defense()
 
             # check player 2 controls
             if self.player == 2:
@@ -97,7 +98,7 @@ class Fighter():
                     self.running = True
                 # jump
                 if key[pygame.K_UP] and self.jump == False:
-                    self.vel_y = -30
+                    self.vel_y = -60 #-30
                     self.jump = True
                 # attack
                 if key[pygame.K_SPACE] or key[pygame.K_KP2] or action[2] or action[3]:
@@ -109,7 +110,7 @@ class Fighter():
                         self.attack_type = 1
                 # defense
                 if key[pygame.K_m] or action[4]:    # defense
-                    self.defense = True
+                    self.defense()
 
         # apply gravity
         self.vel_y += GRAVITY
@@ -133,7 +134,12 @@ class Fighter():
 
         # apply attack cooldown
         if self.attack_cooldown > 0:
-            self.attack_cooldown -= 1
+            self.attack_cooldown -=  2 #1
+        
+        #apply defense cooldown
+        if self.defense_cooldown > 0:
+            self.defense_cooldown -= 1 #1
+
 
         # update player position
         self.rect.x += dx
@@ -158,13 +164,13 @@ class Fighter():
             self.update_action(2)  # 2:jump
         elif self.running == True:
             self.update_action(1)  # 1:run
-        elif self.defense == True:
+        elif self.defensing == True:
             self.update_action(7)   # 7:defense
         else:
             self.update_action(0)  # 0:idle
 
 
-        animation_cooldown = 50
+        animation_cooldown = 40 #50
         # update image
         self.image = self.animation_list[self.action][self.frame_index]
         # check if enough time has passed since the last update
@@ -189,8 +195,8 @@ class Fighter():
                     self.attacking = False
                     self.attack_cooldown = 20
                 if self.action == 7:
-                    self.defense = False
-
+                    self.defensing = False
+                    self.defense_cooldown = 20
 
     def attack(self, target):
         if self.attack_cooldown == 0:
@@ -200,11 +206,23 @@ class Fighter():
             attacking_rect = pygame.Rect(self.rect.centerx - (
                 3 * self.rect.width * self.flip), self.rect.y, 3 * self.rect.width, self.rect.height)
             if attacking_rect.colliderect(target.rect):
-                target.health -= 10
-                target.hit = True
-                target.head_count += 1
-                target.head_img = pygame.image.load(target.head_list[target.head_count])   # start from the first style img (0)
-                target.head_img = pygame.transform.scale(target.head_img, (target.head_size, target.head_size))
+                if target.defensing == True:
+                    target.health -= 2
+                else:
+                    target.health -= 10
+                    target.hit = True
+                if target.health <= 0:
+                    target.health = 0
+                self.hdimg_count(target) 
+
+    def hdimg_count(self, target):
+        target.head_count = 11 - (target.health // 9)
+        target.head_img = pygame.image.load(target.head_list[target.head_count])   # start from the first style img (0)
+        target.head_img = pygame.transform.scale(target.head_img, (target.head_size, target.head_size))
+    
+    def defense(self):
+        if self.defense_cooldown == 0:  
+            self.defensing = True
 
     def update_action(self, new_action):
         # check if the new action is different to the previous one

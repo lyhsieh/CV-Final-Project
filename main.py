@@ -247,7 +247,7 @@ with mp_pose.Pose(
                 elif abs(left_hand_x - right_hand_x) < 0.1:  # this num hasn't been tested
                     if not action1[4]:
                         action1[4], person_1[4] = True, True
-                        print('defense')
+                        print('left defense')
                     else:
                         print('action = defense, but you should return to None')
 
@@ -317,13 +317,13 @@ with mp_pose.Pose(
                 elif abs(left_hand_x - right_hand_x) < 0.1:  # this num hasn't been tested
                     if not action2[4]:
                         action2[4], person_2[4] = True, True
-                        print('defense')
+                        print('right defense')
                     else:
                         print('action = defense, but you should return to None')
 
                 # no action
                 else:
-                    print('None')
+                    # print('None')
                     action2[2], action2[3], action2[4] = False, False, False
                     # for i in range(len(action2)):
                     #     action2[i] = False

@@ -32,6 +32,7 @@ Space: attack
 M: defense
 
 ## Contributors
+This project exists thanks to all people who contribute.
 <a href="https://github.com/LeoTheBestCoder/CV-Final-Project/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=LeoTheBestCoder/CV-Final-Project" />
 </a>

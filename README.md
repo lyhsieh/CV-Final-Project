@@ -30,3 +30,8 @@ F: defense
 Arrow key: move  
 Space: attack  
 M: defense
+
+## Contributors
+<a href="https://github.com/LeoTheBestCoder/CV-Final-Project/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=LeoTheBestCoder/CV-Final-Project" />
+</a>

@@ -20,6 +20,11 @@
     pip install -r requirements.txt
     ```
 
+1. Run `main.py`
+	```bash
+	python main.py
+	```
+
 ## How to play
 - Player 1  
 W, A, S, D: move  

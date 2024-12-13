@@ -3,7 +3,7 @@
 ## Getting Started
 1. Clone the project
     ```bash
-    git clone https://github.com/LeoTheBestCoder/CV-Final-Project
+    git clone https://github.com/lyhsieh/CV-Final-Project
     ```
 1. Create a virtual environment with `conda`
     ```bash
